@@ -6,7 +6,9 @@ const nextConfig = {
       'utfs.io',
       'images.unsplash.com',
       'lh3.googleusercontent.com',
+      'api.liteapi.travel',
     ],
+    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
