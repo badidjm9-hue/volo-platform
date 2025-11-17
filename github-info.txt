@@ -1,0 +1,19 @@
+# GitHub Repository Information
+# Copy this information when creating your GitHub repository
+
+Username: Badru21
+Email: djmbadi@gmail.com
+Repository Name: volo-platform
+Description: Volo Platform - Hotel Booking System with Next.js, liteAPI Integration
+
+Repository URL: https://github.com/Badru21/volo-platform
+
+# Instructions:
+# 1. Go to https://github.com/new
+# 2. Fill the form with the information above
+# 3. Choose Public or Private
+# 4. Do NOT check "Add a README file"
+# 5. Do NOT check "Add .gitignore"
+# 6. Do NOT check "Choose a license"
+# 7. Click "Create repository"
+# 8. After creation, follow the instructions in GITHUB_UPLOAD_INSTRUCTIONS.md
