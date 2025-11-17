@@ -1,0 +1,2062 @@
+# Volo Platform - All Files (Part 1: Core Configuration)
+
+## 📁 File: package.json
+
+```json
+{
+  "name": "volo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "migrate": "prisma migrate deploy",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.1",
+    "@radix-ui/react-accordion": "^1.1.2",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-avatar": "^1.0.4",
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slider": "^1.1.2",
+    "@radix-ui/react-switch": "^1.0.3",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toast": "^1.1.5",
+    "@sendgrid/mail": "^8.1.0",
+    "@tanstack/react-query": "^5.17.1",
+    "bcryptjs": "^2.4.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.0.6",
+    "framer-motion": "^10.18.0",
+    "lucide-react": "^0.303.0",
+    "next": "14.0.4",
+    "next-auth": "^4.24.5",
+    "react": "^18.2.0",
+    "react-day-picker": "^8.10.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.3",
+    "recharts": "^2.10.3",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8",
+    "prisma": "^5.7.1",
+    "tailwindcss": "^3.3.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5"
+  }
+}
+```
+
+-----
+
+## 📁 File: tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+-----
+
+## 📁 File: tailwind.config.ts
+
+```typescript
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  darkMode: ['class'],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
+  theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1400px',
+      },
+    },
+    extend: {
+      colors: {
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: '#32B8C6',
+          50: '#E8F8FA',
+          100: '#D1F1F5',
+          200: '#A3E3EB',
+          300: '#75D5E1',
+          400: '#47C7D7',
+          500: '#32B8C6',
+          600: '#28939E',
+          700: '#1E6E77',
+          800: '#14494F',
+          900: '#0A2428',
+          foreground: '#FFFFFF',
+        },
+        navy: {
+          DEFAULT: '#1A3B5D',
+          50: '#E8ECF1',
+          100: '#D1D9E3',
+          200: '#A3B3C7',
+          300: '#758DAB',
+          400: '#47678F',
+          500: '#1A3B5D',
+          600: '#152F4A',
+          700: '#102338',
+          800: '#0B1825',
+          900: '#050C13',
+        },
+        orange: {
+          DEFAULT: '#FF6B35',
+          50: '#FFE8E0',
+          100: '#FFD1C1',
+          200: '#FFA383',
+          300: '#FF7545',
+          400: '#FF6B35',
+          500: '#FF5315',
+          600: '#CC4211',
+          700: '#99320D',
+          800: '#662109',
+          900: '#331105',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+      keyframes: {
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+        arabic: ['Tajawal', 'sans-serif'],
+      },
+    },
+  },
+  plugins: [require('tailwindcss-animate')],
+}
+
+export default config
+```
+
+-----
+
+## 📁 File: next.config.js
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    domains: [
+      'uploadthing.com',
+      'utfs.io',
+      'images.unsplash.com',
+      'lh3.googleusercontent.com',
+    ],
+    formats: ['image/avif', 'image/webp'],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
+  },
+  compress: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
+  swcMinify: true,
+  async redirects() {
+    return [
+      {
+        source: '/dashboard',
+        destination: '/dashboard/bookings',
+        permanent: true,
+      },
+      {
+        source: '/owner',
+        destination: '/owner/overview',
+        permanent: true,
+      },
+      {
+        source: '/admin',
+        destination: '/admin/overview',
+        permanent: true,
+      },
+    ]
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+    ]
+  },
+}
+
+module.exports = nextConfig
+```
+
+-----
+
+## 📁 File: .env.example
+
+```bash
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/volo?schema=public"
+
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-super-secret-key-minimum-32-characters-long"
+
+# SATIM Payment Gateway (Algeria)
+SATIM_MERCHANT_ID="your-merchant-id"
+SATIM_API_KEY="your-api-key"
+SATIM_SECRET_KEY="your-secret-key-for-signature"
+SATIM_ENDPOINT="https://test.satim.dz/payment/rest/register.do"
+SATIM_CURRENCY="012"
+
+# Email (SendGrid)
+SENDGRID_API_KEY="SG...."
+SENDGRID_FROM_EMAIL="noreply@volo.dz"
+SENDGRID_FROM_NAME="Volo"
+
+# Mapbox
+NEXT_PUBLIC_MAPBOX_TOKEN="pk.eyJ1..."
+
+# Platform Settings
+PLATFORM_COMMISSION_RATE="0.15"
+PLATFORM_NAME="Volo"
+PLATFORM_EMAIL="support@volo.dz"
+PLATFORM_PHONE="+213123456789"
+
+# Environment
+NODE_ENV="development"
+```
+
+-----
+
+## 📁 File: .gitignore
+
+```
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Next.js
+.next/
+out/
+build
+dist
+
+# Production
+.vercel
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma
+prisma/migrations
+```
+
+-----
+
+## 📁 File: postcss.config.js
+
+```javascript
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+```
+
+-----
+
+## 📁 File: .eslintrc.json
+
+```json
+{
+  "extends": "next/core-web-vitals"
+}
+```
+# Volo Platform - All Files (Part 2: Database Schema)
+
+## 📁 File: prisma/schema.prisma
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  GUEST
+  HOTEL_OWNER
+  ADMIN
+}
+
+enum LoyaltyTier {
+  BLUE
+  SILVER
+  GOLD
+}
+
+enum HotelStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum PropertyType {
+  HOTEL
+  APARTMENT
+  RESORT
+  GUEST_HOUSE
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum PaymentMethod {
+  CIB
+  EDHAHABIA
+  CARD
+  PAY_AT_PROPERTY
+}
+
+enum DocumentType {
+  LICENSE
+  TAX_ID
+  OWNER_ID
+  COMMERCIAL_REGISTER
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+model User {
+  id              String        @id @default(cuid())
+  email           String        @unique
+  phone           String?
+  passwordHash    String
+  firstName       String
+  lastName        String
+  role            UserRole      @default(GUEST)
+  profilePhoto    String?
+  language        String        @default("ar")
+  loyaltyTier     LoyaltyTier   @default(BLUE)
+  loyaltyPoints   Int           @default(0)
+  emailVerified   DateTime?
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  bookings        Booking[]
+  reviews         Review[]
+  hotels          Hotel[]       @relation("HotelOwner")
+  wishlists       Wishlist[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Hotel {
+  id              String         @id @default(cuid())
+  ownerId         String
+  name            String
+  nameAr          String
+  nameFr          String?
+  slug            String         @unique
+  description     String         @db.Text
+  propertyType    PropertyType   @default(HOTEL)
+  starRating      Int            @default(3)
+  status          HotelStatus    @default(PENDING)
+  address         String
+  city            String
+  country         String         @default("Algeria")
+  latitude        Float
+  longitude       Float
+  phone           String
+  email           String
+  amenities       Json           @default("[]")
+  policies        Json           @default("{}")
+  images          Json           @default("[]")
+  featuredImage   String?
+  isFeatured      Boolean        @default(false)
+  averageRating   Float          @default(0)
+  totalReviews    Int            @default(0)
+  totalBookings   Int            @default(0)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  owner           User           @relation("HotelOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  rooms           Room[]
+  bookings        Booking[]
+  reviews         Review[]
+  documents       Document[]
+  payouts         Payout[]
+
+  @@index([ownerId])
+  @@index([city])
+  @@index([status])
+  @@index([slug])
+  @@index([averageRating])
+}
+
+model Room {
+  id                 String    @id @default(cuid())
+  hotelId            String
+  name               String
+  nameAr             String
+  description        String    @db.Text
+  maxOccupancy       Int
+  bedConfiguration   Json
+  roomSize           Float
+  bathroomCount      Int       @default(1)
+  amenities          Json      @default("[]")
+  basePrice          Float
+  images             Json      @default("[]")
+  mealPlans          Json      @default("[]")
+  quantity           Int       @default(1)
+  isActive           Boolean   @default(true)
+  cancellationPolicy Json
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  hotel              Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  bookings           Booking[]
+
+  @@index([hotelId])
+  @@index([isActive])
+}
+
+model Booking {
+  id                String         @id @default(cuid())
+  referenceNumber   String         @unique
+  userId            String
+  hotelId           String
+  roomId            String
+  status            BookingStatus  @default(PENDING)
+  checkIn           DateTime
+  checkOut          DateTime
+  nights            Int
+  guests            Json
+  roomsBooked       Int            @default(1)
+  pricePerNight     Float
+  totalAmount       Float
+  mealPlan          String?
+  specialRequests   String?        @db.Text
+  guestDetails      Json
+  paymentStatus     PaymentStatus  @default(PENDING)
+  paymentMethod     PaymentMethod?
+  transactionId     String?
+  promoCode         String?
+  discount          Float          @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  user              User           @relation(fields: [userId], references: [id])
+  hotel             Hotel          @relation(fields: [hotelId], references: [id])
+  room              Room           @relation(fields: [roomId], references: [id])
+  review            Review?
+  transaction       Transaction?
+
+  @@index([userId])
+  @@index([hotelId])
+  @@index([roomId])
+  @@index([referenceNumber])
+  @@index([status])
+  @@index([checkIn])
+  @@index([checkOut])
+}
+
+model Review {
+  id               String    @id @default(cuid())
+  userId           String
+  hotelId          String
+  bookingId        String    @unique
+  overallScore     Float
+  scores           Json
+  title            String
+  comment          String    @db.Text
+  pros             String?   @db.Text
+  cons             String?   @db.Text
+  photos           Json      @default("[]")
+  isVerified       Boolean   @default(false)
+  helpfulVotes     Int       @default(0)
+  hotelResponse    String?   @db.Text
+  respondedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+  hotel            Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  booking          Booking   @relation(fields: [bookingId], references: [id])
+
+  @@index([userId])
+  @@index([hotelId])
+  @@index([bookingId])
+  @@index([overallScore])
+}
+
+model Wishlist {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String   @default("My Favorites")
+  hotelIds    Json     @default("[]")
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Transaction {
+  id              String         @id @default(cuid())
+  bookingId       String         @unique
+  amount          Float
+  currency        String         @default("DZD")
+  method          PaymentMethod
+  status          PaymentStatus
+  gatewayResponse Json?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  booking         Booking        @relation(fields: [bookingId], references: [id])
+
+  @@index([bookingId])
+  @@index([status])
+}
+
+model Promotion {
+  id             String        @id @default(cuid())
+  code           String        @unique
+  description    String
+  discountType   DiscountType
+  discountValue  Float
+  minAmount      Float?
+  maxDiscount    Float?
+  startDate      DateTime
+  endDate        DateTime
+  usageLimit     Int?
+  usageCount     Int           @default(0)
+  isActive       Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+}
+
+model Document {
+  id              String         @id @default(cuid())
+  hotelId         String
+  type            DocumentType
+  fileUrl         String
+  status          DocumentStatus @default(PENDING)
+  rejectionReason String?        @db.Text
+  uploadedAt      DateTime       @default(now())
+  reviewedAt      DateTime?
+
+  hotel           Hotel          @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@index([hotelId])
+  @@index([status])
+}
+
+model Payout {
+  id              String        @id @default(cuid())
+  hotelId         String
+  amount          Float
+  commission      Float
+  netAmount       Float
+  status          PayoutStatus  @default(PENDING)
+  bookingIds      Json          @default("[]")
+  bankDetails     Json
+  requestedAt     DateTime      @default(now())
+  processedAt     DateTime?
+  completedAt     DateTime?
+  notes           String?       @db.Text
+
+  hotel           Hotel         @relation(fields: [hotelId], references: [id])
+
+  @@index([hotelId])
+  @@index([status])
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  entity      String
+  entityId    String?
+  details     Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+}
+
+model PlatformSettings {
+  id                String   @id @default(cuid())
+  commissionRate    Float    @default(0.15)
+  vatRate           Float    @default(0.19)
+  currency          String   @default("DZD")
+  paymentMethods    Json     @default("[]")
+  emailTemplates    Json     @default("{}")
+  maintenanceMode   Boolean  @default(false)
+  featuredSlots     Int      @default(10)
+  updatedAt         DateTime @updatedAt
+}
+```
+
+# Volo Platform - All Files (Part 3: Library Files)
+
+## 📁 File: lib/utils.ts
+
+```typescript
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export function formatCurrency(amount: number, currency: string = 'DZD'): string {
+  return new Intl.NumberFormat('ar-DZ', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount)
+}
+
+export function formatDate(date: Date | string, locale: string = 'ar'): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(dateObj)
+}
+
+export function calculateNights(checkIn: Date, checkOut: Date): number {
+  const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+}
+
+export function generateReferenceNumber(): string {
+  const prefix = 'VOL'
+  const timestamp = Date.now().toString(36).toUpperCase()
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase()
+  return `${prefix}${timestamp}${random}`
+}
+
+export function calculateDiscount(
+  originalPrice: number,
+  discountType: 'PERCENTAGE' | 'FIXED',
+  discountValue: number,
+  maxDiscount?: number
+): number {
+  let discount = 0
+  
+  if (discountType === 'PERCENTAGE') {
+    discount = (originalPrice * discountValue) / 100
+    if (maxDiscount && discount > maxDiscount) {
+      discount = maxDiscount
+    }
+  } else {
+    discount = discountValue
+  }
+  
+  return Math.min(discount, originalPrice)
+}
+
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+}
+
+export const algerianCities = [
+  { name: 'Algiers', nameAr: 'الجزائر', lat: 36.7538, lng: 3.0588 },
+  { name: 'Oran', nameAr: 'وهران', lat: 35.6969, lng: -0.6331 },
+  { name: 'Constantine', nameAr: 'قسنطينة', lat: 36.3650, lng: 6.6147 },
+  { name: 'Annaba', nameAr: 'عنابة', lat: 36.9000, lng: 7.7667 },
+  { name: 'Blida', nameAr: 'البليدة', lat: 36.4803, lng: 2.8280 },
+  { name: 'Batna', nameAr: 'باتنة', lat: 35.5559, lng: 6.1741 },
+  { name: 'Sétif', nameAr: 'سطيف', lat: 36.1905, lng: 5.4139 },
+  { name: 'Tlemcen', nameAr: 'تلمسان', lat: 34.8780, lng: -1.3157 },
+  { name: 'Béjaïa', nameAr: 'بجاية', lat: 36.7525, lng: 5.0556 },
+  { name: 'Tizi Ouzou', nameAr: 'تيزي وزو', lat: 36.7117, lng: 4.0478 },
+]
+
+export function validateEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+export function validatePhone(phone: string): boolean {
+  const phoneRegex = /^(\+213|0)[5-7][0-9]{8}$/
+  return phoneRegex.test(phone)
+}
+
+export function validatePassword(password: string): {
+  isValid: boolean
+  errors: string[]
+} {
+  const errors: string[] = []
+  
+  if (password.length < 8) {
+    errors.push('Password must be at least 8 characters')
+  }
+  if (!/[A-Z]/.test(password)) {
+    errors.push('Password must contain uppercase letter')
+  }
+  if (!/[a-z]/.test(password)) {
+    errors.push('Password must contain lowercase letter')
+  }
+  if (!/[0-9]/.test(password)) {
+    errors.push('Password must contain number')
+  }
+  
+  return { isValid: errors.length === 0, errors }
+}
+```
+
+-----
+
+## 📁 File: lib/prisma.ts
+
+```typescript
+import { PrismaClient } from '@prisma/client'
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined
+}
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({
+  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+})
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+```
+
+-----
+
+## 📁 File: lib/auth.ts
+
+```typescript
+import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import bcrypt from 'bcryptjs'
+import { prisma } from './prisma'
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Invalid credentials')
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+
+        if (!user || !user.isActive) {
+          throw new Error('Invalid credentials')
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.passwordHash
+        )
+
+        if (!isPasswordValid) {
+          throw new Error('Invalid credentials')
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: `${user.firstName} ${user.lastName}`,
+          role: user.role,
+          image: user.profilePhoto,
+        }
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+        token.role = user.role
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.role = token.role as string
+      }
+      return session
+    },
+  },
+  pages: {
+    signIn: '/login',
+    error: '/login',
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+}
+
+export async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 12)
+}
+
+export async function verifyPassword(
+  password: string,
+  hashedPassword: string
+): Promise<boolean> {
+  return bcrypt.compare(password, hashedPassword)
+}
+```
+
+-----
+
+## 📁 File: lib/satim.ts
+
+```typescript
+import crypto from 'crypto'
+
+interface SatimPaymentParams {
+  amount: number
+  orderNumber: string
+  returnUrl: string
+  failUrl: string
+  description?: string
+  customerEmail?: string
+}
+
+interface SatimPaymentResponse {
+  success: boolean
+  orderId?: string
+  formUrl?: string
+  error?: string
+}
+
+export class SatimPaymentGateway {
+  private merchantId: string
+  private apiKey: string
+  private secretKey: string
+  private endpoint: string
+  private currency: string
+
+  constructor() {
+    this.merchantId = process.env.SATIM_MERCHANT_ID!
+    this.apiKey = process.env.SATIM_API_KEY!
+    this.secretKey = process.env.SATIM_SECRET_KEY!
+    this.endpoint = process.env.SATIM_ENDPOINT!
+    this.currency = process.env.SATIM_CURRENCY || '012'
+  }
+
+  private generateSignature(data: string): string {
+    return crypto
+      .createHmac('sha256', this.secretKey)
+      .update(data)
+      .digest('hex')
+      .toUpperCase()
+  }
+
+  async createPayment(params: SatimPaymentParams): Promise<SatimPaymentResponse> {
+    try {
+      const amountInCents = Math.round(params.amount * 100)
+      
+      const requestData = {
+        userName: this.merchantId,
+        password: this.apiKey,
+        orderNumber: params.orderNumber,
+        amount: amountInCents,
+        currency: this.currency,
+        returnUrl: params.returnUrl,
+        failUrl: params.failUrl,
+        description: params.description || 'Hotel Booking',
+        language: 'ar',
+        pageView: 'DESKTOP',
+        jsonParams: JSON.stringify({
+          customerEmail: params.customerEmail,
+          force_terminal_id: '1',
+        }),
+      }
+
+      const response = await fetch(this.endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(requestData as any).toString(),
+      })
+
+      const result = await response.json()
+
+      if (result.errorCode === '0') {
+        return {
+          success: true,
+          orderId: result.orderId,
+          formUrl: result.formUrl,
+        }
+      } else {
+        return {
+          success: false,
+          error: result.errorMessage || 'Payment creation failed',
+        }
+      }
+    } catch (error) {
+      console.error('SATIM payment error:', error)
+      return {
+        success: false,
+        error: 'Payment gateway error',
+      }
+    }
+  }
+
+  async getPaymentStatus(orderId: string): Promise<{
+    success: boolean
+    status?: string
+    amount?: number
+    error?: string
+  }> {
+    try {
+      const statusEndpoint = this.endpoint.replace('register.do', 'getOrderStatusExtended.do')
+      
+      const response = await fetch(statusEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          userName: this.merchantId,
+          password: this.apiKey,
+          orderId: orderId,
+          language: 'ar',
+        }).toString(),
+      })
+
+      const result = await response.json()
+
+      if (result.errorCode === '0') {
+        return {
+          success: true,
+          status: this.mapOrderStatus(result.orderStatus),
+          amount: result.amount ? result.amount / 100 : undefined,
+        }
+      } else {
+        return {
+          success: false,
+          error: result.errorMessage || 'Status check failed',
+        }
+      }
+    } catch (error) {
+      console.error('SATIM status check error:', error)
+      return {
+        success: false,
+        error: 'Status check error',
+      }
+    }
+  }
+
+  private mapOrderStatus(status: number): string {
+    const statusMap: Record<number, string> = {
+      0: 'CREATED',
+      1: 'PENDING',
+      2: 'PAID',
+      3: 'CANCELLED',
+      4: 'REFUNDED',
+      5: 'INITIATED',
+      6: 'DECLINED',
+    }
+    return statusMap[status] || 'UNKNOWN'
+  }
+
+  verifyWebhookSignature(payload: string, signature: string): boolean {
+    const calculatedSignature = this.generateSignature(payload)
+    return calculatedSignature === signature
+  }
+}
+
+export const satimGateway = new SatimPaymentGateway()
+```
+
+-----
+
+## 📁 File: lib/email.ts
+
+```typescript
+import sgMail from '@sendgrid/mail'
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
+
+interface EmailParams {
+  to: string
+  subject: string
+  html: string
+  text?: string
+}
+
+export async function sendEmail({ to, subject, html, text }: EmailParams) {
+  try {
+    await sgMail.send({
+      to,
+      from: {
+        email: process.env.SENDGRID_FROM_EMAIL!,
+        name: process.env.SENDGRID_FROM_NAME!,
+      },
+      subject,
+      html,
+      text: text || html.replace(/<[^>]*>/g, ''),
+    })
+    return { success: true }
+  } catch (error) {
+    console.error('Email sending error:', error)
+    return { success: false, error }
+  }
+}
+
+export function generateBookingConfirmationEmail(bookingData: any) {
+  return {
+    subject: `تأكيد الحجز - ${bookingData.referenceNumber}`,
+    html: `
+      <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1 style="color: #32B8C6;">تم تأكيد حجزك!</h1>
+        <p>عزيزي ${bookingData.guestName},</p>
+        <p>تم تأكيد حجزك بنجاح في ${bookingData.hotelName}</p>
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+          <p><strong>رقم الحجز:</strong> ${bookingData.referenceNumber}</p>
+          <p><strong>الفندق:</strong> ${bookingData.hotelName}</p>
+          <p><strong>تاريخ الوصول:</strong> ${bookingData.checkIn}</p>
+          <p><strong>تاريخ المغادرة:</strong> ${bookingData.checkOut}</p>
+          <p><strong>المبلغ الإجمالي:</strong> ${bookingData.totalAmount} دج</p>
+        </div>
+        <p>نتمنى لك إقامة سعيدة!</p>
+        <p style="color: #666; font-size: 12px;">Volo - منصة حجز الفنادق في الجزائر</p>
+      </div>
+    `
+  }
+}
+```
+
+# Volo Platform - All Files (Part 4: App Core Files)
+
+## 📁 File: app/globals.css
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 186 60% 48%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 186 60% 48%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600;
+  }
+
+  .gradient-hero {
+    @apply bg-gradient-to-br from-primary-400 via-primary-500 to-navy-600;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-navy-600 bg-clip-text text-transparent;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(
+      to right,
+      #f6f7f8 0%,
+      #edeef1 20%,
+      #f6f7f8 40%,
+      #f6f7f8 100%
+    );
+    background-size: 1000px 100%;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+}
+
+html[dir="rtl"] {
+  font-family: 'Tajawal', sans-serif;
+}
+
+html[dir="ltr"] {
+  font-family: 'Poppins', sans-serif;
+}
+```
+
+-----
+
+## 📁 File: app/layout.tsx
+
+```typescript
+import './globals.css'
+import type { Metadata } from 'next'
+import { Providers } from '@/components/providers'
+import { Toaster } from '@/components/ui/toaster'
+
+export const metadata: Metadata = {
+  title: 'Volo - احجز فندقك في الجزائر',
+  description: 'منصة حجز الفنادق الرائدة في الجزائر. اكتشف أفضل الفنادق.',
+  keywords: 'حجز فنادق الجزائر، فنادق، Volo',
+  openGraph: {
+    title: 'Volo - احجز فندقك في الجزائر',
+    description: 'منصة حجز الفنادق الرائدة في الجزائر',
+    type: 'website',
+    locale: 'ar_DZ',
+  },
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 antialiased">
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+-----
+
+## 📁 File: app/page.tsx
+
+```typescript
+'use client'
+
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Search, Calendar, Users, MapPin, Star } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+import { useRouter } from 'next/navigation'
+
+export default function HomePage() {
+  const router = useRouter()
+
+  return (
+    <div className="min-h-screen">
+      <Header />
+      
+      <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 gradient-hero opacity-90" />
+        <div className="absolute inset-0 bg-[url('/patterns/dots.svg')] opacity-10" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 w-full max-w-6xl mx-auto px-4 py-20"
+        >
+          <div className="text-center mb-12">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+‎              اكتشف الجزائر
+              <br />
+              <span className="text-white/90">احجز فندقك الآن</span>
+            </h1>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+‎              آلاف الفنادق في جميع أنحاء الجزائر، أفضل الأسعار، حجز سريع وآمن
+            </p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl">
+            <div className="grid md:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-white/80 text-sm mb-2">الوجهة</label>
+                <div className="relative">
+                  <MapPin className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="أين تريد الذهاب؟"
+                    className="w-full pr-10 pl-4 py-3 rounded-lg bg-white/90 focus:outline-none focus:ring-2 focus:ring-white text-right"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-white/80 text-sm mb-2">تاريخ الوصول</label>
+                <div className="relative">
+                  <Calendar className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                  <input
+                    type="date"
+                    className="w-full pr-10 pl-4 py-3 rounded-lg bg-white/90 focus:outline-none focus:ring-2 focus:ring-white"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-white/80 text-sm mb-2">تاريخ المغادرة</label>
+                <div className="relative">
+                  <Calendar className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                  <input
+                    type="date"
+                    className="w-full pr-10 pl-4 py-3 rounded-lg bg-white/90 focus:outline-none focus:ring-2 focus:ring-white"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-white/80 text-sm mb-2">الضيوف</label>
+                <div className="relative">
+                  <Users className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                  <select className="w-full pr-10 pl-4 py-3 rounded-lg bg-white/90 focus:outline-none focus:ring-2 focus:ring-white appearance-none">
+                    <option>2 ضيوف</option>
+                    <option>3 ضيوف</option>
+                    <option>4 ضيوف</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => router.push('/search')}
+              className="w-full mt-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white py-4 rounded-lg font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+            >
+              <Search className="w-5 h-5" />
+‎              بحث عن فنادق
+            </button>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="py-12 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: '10,000+', label: 'فندق' },
+              { value: '500K+', label: 'حجز' },
+              { value: '48', label: 'ولاية' },
+              { value: '4.8/5', label: 'تقييم' }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className="text-4xl font-bold text-primary-600 mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-gray-600">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gradient-to-br from-primary-500 to-navy-600">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">هل تملك فندق؟</h2>
+          <p className="text-xl text-white/90 mb-8">
+‎            انضم إلى Volo وابدأ في استقبال حجوزات من آلاف العملاء
+          </p>
+          <Button
+            size="lg"
+            className="bg-white text-primary-600 hover:bg-white/90 text-lg px-8 py-6"
+            onClick={() => router.push('/owner/register')}
+          >
+‎            سجل فندقك الآن
+          </Button>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  )
+}
+```
+
+-----
+
+## 📁 File: components/providers.tsx
+
+```typescript
+'use client'
+
+import { SessionProvider } from 'next-auth/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+  }))
+
+  return (
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </SessionProvider>
+  )
+}
+```
+
+-----
+
+## 📁 File: components/layout/header.tsx
+
+```typescript
+'use client'
+
+import Link from 'next/link'
+import { Menu, Bell, User } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+
+export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  return (
+    <header className="bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="text-3xl font-bold bg-gradient-to-r from-primary-500 to-navy-600 bg-clip-text text-transparent">
+              Volo
+            </Link>
+            <nav className="hidden md:flex gap-6">
+              <Link href="/" className="text-gray-700 hover:text-primary-500 transition-colors">
+‎                الرئيسية
+              </Link>
+              <Link href="/search" className="text-gray-700 hover:text-primary-500 transition-colors">
+‎                البحث
+              </Link>
+              <Link href="/offers" className="text-gray-700 hover:text-primary-500 transition-colors">
+‎                عروض
+              </Link>
+            </nav>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <Button variant="ghost">
+‎              تسجيل الدخول
+            </Button>
+            <Button className="bg-gradient-to-r from-primary-500 to-navy-600">
+‎              إنشاء حساب
+            </Button>
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+  )
+}
+```
+
+-----
+
+## 📁 File: components/layout/footer.tsx
+
+```typescript
+import Link from 'next/link'
+import { Facebook, Instagram, Twitter, Mail, Phone } from 'lucide-react'
+
+export function Footer() {
+  return (
+    <footer className="bg-navy-800 text-white pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h3 className="text-2xl font-bold mb-4 text-primary-400">Volo</h3>
+            <p className="text-gray-300">
+‎              منصة حجز الفنادق الرائدة في الجزائر
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">روابط سريعة</h4>
+            <ul className="space-y-2">
+              <li><Link href="/about" className="text-gray-300 hover:text-primary-400">من نحن</Link></li>
+              <li><Link href="/contact" className="text-gray-300 hover:text-primary-400">اتصل بنا</Link></li>
+              <li><Link href="/terms" className="text-gray-300 hover:text-primary-400">الشروط والأحكام</Link></li>
+              <li><Link href="/privacy" className="text-gray-300 hover:text-primary-400">سياسة الخصوصية</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">للفنادق</h4>
+            <ul className="space-y-2">
+              <li><Link href="/owner/register" className="text-gray-300 hover:text-primary-400">سجل فندقك</Link></li>
+              <li><Link href="/owner/login" className="text-gray-300 hover:text-primary-400">تسجيل دخول الملاك</Link></li>
+              <li><Link href="/help" className="text-gray-300 hover:text-primary-400">مركز المساعدة</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">تواصل معنا</h4>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                <span className="text-gray-300">support@volo.dz</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4" />
+                <span className="text-gray-300">+213 123 456 789</span>
+              </div>
+              <div className="flex gap-4 mt-4">
+                <Facebook className="w-5 h-5 cursor-pointer hover:text-primary-400" />
+                <Instagram className="w-5 h-5 cursor-pointer hover:text-primary-400" />
+                <Twitter className="w-5 h-5 cursor-pointer hover:text-primary-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
+          <p>&copy; 2025 Volo. جميع الحقوق محفوظة.</p>
+        </div>
+      </div>
+    </footer>
+  )
+}
+```
+
+# 🚀 Volo - دليل التثبيت الكامل
+
+‎## 📥 كيفية تحميل وتثبيت المشروع
+
+‎### الطريقة 1: التثبيت اليدوي (موصى بها)
+
+‎#### الخطوة 1: إنشاء المشروع
+
+```bash
+‎# إنشاء مجلد المشروع
+mkdir volo
+cd volo
+
+‎# تهيئة مشروع Node.js
+npm init -y
+```
+
+‎#### الخطوة 2: نسخ ملف package.json
+
+‎افتح ملف `package.json` وانسخ المحتوى التالي:
+
+```json
+{
+  "name": "volo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.1",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-slider": "^1.1.2",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@tanstack/react-query": "^5.17.1",
+    "bcryptjs": "^2.4.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.0.6",
+    "framer-motion": "^10.18.0",
+    "lucide-react": "^0.303.0",
+    "next": "14.0.4",
+    "next-auth": "^4.24.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8",
+    "prisma": "^5.7.1",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}
+```
+
+‎#### الخطوة 3: تثبيت المكتبات
+
+```bash
+npm install
+```
+
+‎#### الخطوة 4: إنشاء هيكل المجلدات
+
+```bash
+‎# إنشاء المجلدات الأساسية
+mkdir -p app/{api/auth,search,hotel,booking,dashboard,owner,admin}
+mkdir -p components/{ui,layout,search,hotel,booking,owner,admin}
+mkdir -p lib
+mkdir -p prisma
+mkdir -p public
+```
+
+‎#### الخطوة 5: نسخ الملفات
+
+‎انسخ محتوى كل ملف من الأجزاء أعلاه إلى المكان المناسب:
+
+‎**ملفات الجذر:**
+
+- `package.json` ✅ (تم بالفعل)
+- `tsconfig.json`
+- `tailwind.config.ts`
+- `next.config.js`
+- `.env.example` → انسخه إلى `.env`
+- `.gitignore`
+- `postcss.config.js`
+- `.eslintrc.json`
+
+‎**ملفات قاعدة البيانات:**
+
+- `prisma/schema.prisma`
+
+‎**ملفات المكتبات:**
+
+- `lib/utils.ts`
+- `lib/prisma.ts`
+- `lib/auth.ts`
+- `lib/satim.ts`
+- `lib/email.ts`
+
+‎**ملفات التطبيق:**
+
+- `app/layout.tsx`
+- `app/page.tsx`
+- `app/globals.css`
+
+‎**المكونات:**
+
+- `components/providers.tsx`
+- `components/layout/header.tsx`
+- `components/layout/footer.tsx`
+
+‎#### الخطوة 6: إعداد قاعدة البيانات
+
+```bash
+‎# تهيئة قاعدة البيانات
+npx prisma generate
+npx prisma db push
+```
+
+‎#### الخطوة 7: تشغيل المشروع
+
+```bash
+npm run dev
+```
+
+‎افتح المتصفح على: `http://localhost:3000`
+
+-----
+
+‎## 📦 الطريقة 2: تحميل كملف مضغوط
+
+‎### هيكل المشروع الكامل:
+
+```
+volo/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── globals.css
+│   ├── api/
+│   │   └── auth/
+│   ├── search/
+│   ├── hotel/
+│   ├── booking/
+│   ├── dashboard/
+│   ├── owner/
+│   └── admin/
+├── components/
+│   ├── providers.tsx
+│   ├── ui/
+│   ├── layout/
+│   │   ├── header.tsx
+│   │   └── footer.tsx
+│   ├── search/
+│   ├── hotel/
+│   ├── booking/
+│   ├── owner/
+│   └── admin/
+├── lib/
+│   ├── utils.ts
+│   ├── prisma.ts
+│   ├── auth.ts
+│   ├── satim.ts
+│   └── email.ts
+├── prisma/
+│   └── schema.prisma
+├── public/
+├── .env.example
+├── .gitignore
+├── next.config.js
+├── package.json
+├── postcss.config.js
+├── tailwind.config.ts
+└── tsconfig.json
+```
+
+-----
+
+‎## 🔧 إعداد المتغيرات البيئية
+
+‎1. انسخ `.env.example` إلى `.env`:
+
+```bash
+cp .env.example .env
+```
+
+‎1. املأ المتغيرات المطلوبة:
+
+```bash
+‎# قاعدة البيانات (PostgreSQL)
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/volo"
+
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-super-secret-32-characters-min"
+
+# SATIM (للدفع الجزائري)
+SATIM_MERCHANT_ID="your-merchant-id"
+SATIM_API_KEY="your-api-key"
+SATIM_SECRET_KEY="your-secret-key"
+
+# Email
+SENDGRID_API_KEY="SG.your-api-key"
+SENDGRID_FROM_EMAIL="noreply@volo.dz"
+```
+
+-----
+
+‎## 🗄️ إعداد قاعدة البيانات PostgreSQL
+
+‎### على Windows:
+
+‎1. حمّل PostgreSQL من: https://www.postgresql.org/download/
+‎1. ثبّت البرنامج
+‎1. افتح pgAdmin وأنشئ قاعدة بيانات جديدة اسمها `volo`
+‎1. استخدم connection string في `.env`:
+
+```
+DATABASE_URL="postgresql://postgres:PASSWORD@localhost:5432/volo"
+```
+
+‎### على Mac:
+
+```bash
+brew install postgresql
+brew services start postgresql
+createdb volo
+```
+
+‎### على Linux:
+
+```bash
+sudo apt-get install postgresql
+sudo -u postgres createdb volo
+```
+
+-----
+
+‎## ✅ التحقق من التثبيت
+
+‎بعد التثبيت، تحقق من أن كل شيء يعمل:
+
+```bash
+‎# فحص الأخطاء
+npm run lint
+
+‎# إنشاء الـ build
+npm run build
+
+‎# تشغيل الإنتاج
+npm start
+```
+
+-----
+
+‎## 📋 قائمة الملفات المطلوبة
+
+‎### ملفات الإعداد (8 ملفات)
+
+- ✅ package.json
+- ✅ tsconfig.json
+- ✅ tailwind.config.ts
+- ✅ next.config.js
+- ✅ .env.example
+- ✅ .gitignore
+- ✅ postcss.config.js
+- ✅ .eslintrc.json
+
+‎### قاعدة البيانات (1 ملف)
+
+- ✅ prisma/schema.prisma
+
+‎### المكتبات (5 ملفات)
+
+- ✅ lib/utils.ts
+- ✅ lib/prisma.ts
+- ✅ lib/auth.ts
+- ✅ lib/satim.ts
+- ✅ lib/email.ts
+
+‎### التطبيق الأساسي (3 ملفات)
+
+- ✅ app/layout.tsx
+- ✅ app/page.tsx
+- ✅ app/globals.css
+
+‎### المكونات (3 ملفات)
+
+- ✅ components/providers.tsx
+- ✅ components/layout/header.tsx
+- ✅ components/layout/footer.tsx
+
+‎**إجمالي: 20 ملف أساسي ✅**
+
+-----
+
+‎## 🎯 الخطوات التالية
+
+‎بعد التثبيت الأساسي:
+
+‎1. **إضافة صفحات إضافية:**
+‎- صفحة البحث `/search`
+‎- صفحة تفاصيل الفندق `/hotel/[slug]`
+‎- صفحة الحجز `/booking`
+‎- لوحات التحكم
+‎1. **إضافة مكونات UI:**
+- Button, Input, Card, Dialog
+‎- من مكتبة shadcn/ui
+‎1. **إضافة API Routes:**
+- `/api/hotels`
+- `/api/bookings`
+- `/api/payments`
+‎1. **البيانات التجريبية:**
+‎- إضافة فنادق تجريبية
+‎- مستخدمين تجريبيين
+
+-----
+
+## 🆘 حل المشاكل الشائعة
+
+‎### مشكلة: Module not found
+
+```bash
+‎# احذف المجلدات وأعد التثبيت
+rm -rf node_modules .next
+npm install
+```
+
+‎### مشكلة: Prisma client not generated
+
+```bash
+npx prisma generate
+```
+
+‎### مشكلة: Port 3000 مشغول
+
+```bash
+‎# غير المنفذ في package.json
+"dev": "next dev -p 3001"
+```
+
+-----
+
+‎## 📞 الدعم
+
+‎إذا واجهت أي مشاكل:
+
+‎1. تحقق من ملف `.env`
+‎1. تأكد من تثبيت PostgreSQL
+‎1. تحقق من نسخ جميع الملفات بشكل صحيح
+
+-----
+
+‎## 🎉 مبروك!
+
+‎الآن لديك منصة Volo جاهزة للتطوير! 🚀
+
+‎لإضافة المزيد من الميزات، راجع الأجزاء السابقة للحصول على:
+
+‎- صفحات إضافية
+‎- مكونات UI كاملة
+- API endpoints
+‎- لوحات التحكم الثلاثة
