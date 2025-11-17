@@ -1,0 +1,255 @@
+===============================================================================
+                     VOLO PLATFORM - DEPLOYMENT COMMANDS
+===============================================================================
+
+STEP 1: CREATE GITHUB ACCOUNT & REPOSITORY
+-------------------------------------------
+1. Go to https://github.com and create a free account
+2. Click "New repository"
+3. Name: "volo-platform"
+4. Description: "Volo Hotel Booking Platform with LiteAPI Integration"
+5. Make it Public or Private (your choice)
+6. Click "Create repository"
+
+STEP 2: PREPARE PROJECT FOR DEPLOYMENT
+----------------------------------------
+# Navigate to project directory
+cd volo-platform
+
+# Install dependencies
+npm install
+
+# Create production build
+npm run build
+
+# Check for any errors
+npm run lint
+
+# Create .env.local with your credentials
+cp .env.example .env.local
+# Edit .env.local and add your real values
+
+STEP 3: PUSH CODE TO GITHUB
+-----------------------------
+# Initialize git repository
+git init
+
+# Add all files
+git add .
+
+# Create initial commit
+git commit -m "Initial commit: Volo Platform with LiteAPI integration"
+
+# Set main branch
+git branch -M main
+
+# Add remote repository (replace YOUR_USERNAME)
+git remote add origin https://github.com/YOUR_USERNAME/volo-platform.git
+
+# Push to GitHub
+git push -u origin main
+
+STEP 4: DEPLOY TO VERCEL
+-------------------------
+1. Go to https://vercel.com
+2. Sign up with your GitHub account
+3. Click "New Project"
+4. Find and select "volo-platform" repository
+5. Click "Import"
+
+# Vercel Project Settings:
+Framework Preset: Next.js
+Root Directory: ./
+Build Command: npm run build
+Output Directory: .next
+Install Command: npm install
+
+6. Click "Deploy"
+
+STEP 5: CONFIGURE ENVIRONMENT VARIABLES IN VERCEL
+---------------------------------------------------
+In Vercel Dashboard → Project Settings → Environment Variables:
+
+Add these variables:
+
+DATABASE_URL=postgresql://postgres:admin123@localhost:5432/volo?schema=public
+NEXTAUTH_URL=https://your-project.vercel.app
+NEXTAUTH_SECRET=your-secure-random-secret
+LITEAPI_PRIVATE_KEY=sand_615a5da4-8696-4c72-b626-3997aa52dd21
+LITEAPI_PUBLIC_KEY=b01ce90a-ca0d-4f5c-9ab7-67f148f45055
+LITEAPI_BASE_URL=https://api.liteapi.travel
+SATIM_MERCHANT_ID=demo-merchant-id
+SATIM_API_KEY=demo-api-key
+SATIM_SECRET_KEY=demo-secret-key-for-development
+SENDGRID_API_KEY=demo-api-key
+PLATFORM_COMMISSION_RATE=0.15
+PLATFORM_NAME=Volo
+PLATFORM_EMAIL=support@volo.dz
+PLATFORM_PHONE=+213123456789
+
+STEP 6: VERIFY DEPLOYMENT
+--------------------------
+After deployment completes:
+
+1. Visit your Vercel URL (e.g., https://volo-platform-abc123.vercel.app)
+2. Test main page: https://your-project.vercel.app
+3. Test search page: https://your-project.vercel.app/search
+4. Test API health: https://your-project.vercel.app/api/health
+5. Test API page: https://your-project.vercel.app/api-test
+
+STEP 7: UPDATE NEXTAUTH_URL (IMPORTANT)
+----------------------------------------
+After you get your Vercel URL:
+1. Go back to Vercel Dashboard
+2. Project Settings → Environment Variables
+3. Update NEXTAUTH_URL to your actual domain
+4. Redeploy the project
+
+===============================================================================
+                            ALTERNATIVE DEPLOYMENTS
+===============================================================================
+
+NETLIFY DEPLOYMENT:
+-------------------
+1. Go to https://netlify.com
+2. Connect GitHub account
+3. Select "volo-platform" repository
+4. Build settings:
+   - Build command: npm run build
+   - Publish directory: .next
+   - Functions directory: .next/server/pages/api
+5. Add environment variables in Netlify dashboard
+6. Deploy
+
+RAILWAY DEPLOYMENT:
+-------------------
+1. Go to https://railway.app
+2. Connect GitHub account
+3. Create new project from GitHub
+4. Select "volo-platform" repository
+5. Railway auto-detects Next.js
+6. Add environment variables
+7. Deploy
+
+RENDER DEPLOYMENT:
+------------------
+1. Go to https://render.com
+2. Connect GitHub account
+3. Create new Web Service
+4. Connect "volo-platform" repository
+5. Environment:
+   - Build Command: npm install && npm run build
+   - Start Command: npm start
+6. Add environment variables
+7. Deploy
+
+===============================================================================
+                           DATABASE SETUP (Optional)
+===============================================================================
+
+For production, you can use free databases:
+
+SUPABASE:
+1. Go to https://supabase.com
+2. Create free account
+3. Create new project
+4. Get Connection String from Settings → Database
+5. Update DATABASE_URL in environment variables
+
+PLANETSCALE:
+1. Go to https://planetscale.com
+2. Create free account
+3. Create new database
+4. Get connection string
+5. Update DATABASE_URL
+
+RAILWAY POSTGRESQL:
+1. In Railway dashboard, create PostgreSQL service
+2. Get connection string
+3. Update DATABASE_URL
+
+===============================================================================
+                              TESTING AFTER DEPLOY
+===============================================================================
+
+Test these endpoints after deployment:
+
+1. Health Check:
+   GET https://your-domain.vercel.app/api/health
+   Expected: {"status": "ok", "timestamp": "...", "message": "Volo API is running"}
+
+2. Hotel Search:
+   POST https://your-domain.vercel.app/api/hotels/search
+   Body: {"destination": "الجزائر", "checkin": "2025-12-01", "checkout": "2025-12-05", "guests": 2}
+
+3. Hotel Details:
+   GET https://your-domain.vercel.app/api/hotels/{hotelId}
+
+4. Frontend Pages:
+   - Main page: https://your-domain.vercel.app/
+   - Search: https://your-domain.vercel.app/search
+   - API Test: https://your-domain.vercel.app/api-test
+
+===============================================================================
+                              TROUBLESHOOTING
+===============================================================================
+
+COMMON ISSUES:
+
+1. Build Errors:
+   - Check npm run build locally first
+   - Ensure all environment variables are set
+   - Check TypeScript errors
+
+2. API Not Working:
+   - Verify LiteAPI keys in environment variables
+   - Check API logs in Vercel dashboard
+   - Test /api/health endpoint first
+
+3. Database Connection Issues:
+   - Update DATABASE_URL with correct connection string
+   - Ensure database allows connections from Vercel
+
+4. Environment Variables:
+   - Double-check all variables are set in Vercel dashboard
+   - No quotes in environment variable values
+   - Use correct variable names (case-sensitive)
+
+5. LiteAPI Integration:
+   - Verify private and public keys are correct
+   - Check API endpoint URL is accessible
+   - Monitor API usage limits
+
+===============================================================================
+                               SUCCESS INDICATORS
+===============================================================================
+
+✅ Green deployment status in Vercel
+✅ All pages load without errors
+✅ /api/health returns success
+✅ Hotel search returns data (real or fallback)
+✅ /api-test page shows green status for all tests
+✅ No console errors in browser developer tools
+
+===============================================================================
+                                NEXT STEPS
+===============================================================================
+
+After successful deployment:
+
+1. Configure custom domain (optional)
+2. Set up monitoring and analytics
+3. Configure email service (SendGrid)
+4. Set up payment gateway (SATIM)
+5. Add SSL certificate
+6. Configure backup strategy
+7. Set up error monitoring (Sentry)
+8. Add performance monitoring
+
+===============================================================================
+
+🎉 CONGRATULATIONS! Your Volo Platform is now live!
+
+Share your deployment URL with friends and start booking hotels!
+
+===============================================================================

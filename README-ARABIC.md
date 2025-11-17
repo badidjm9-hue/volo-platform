@@ -1,13 +1,13 @@
-# 🌟 منصة Volo - منصة الحجز الذكية
+# 🌟 منصة فولو - منصة الحجز الذكية
 
 منصة حجز فنادق متقدمة مع تكامل كامل مع liteAPI للبحث عن الفنادق بأفضل الأسعار.
 
-![Volo Platform](https://img.shields.io/badge/Platform-Volo-blue?style=for-the-badge)
+![منصة فولو](https://img.shields.io/badge/منصة-فولو-009639?style=for-the-badge)
 ![Next.js](https://img.shields.io/badge/Next.js-14.0.4-black?style=flat-square&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.0-38B2AC?style=flat-square&logo=tailwind-css)
 
-## 🚀 المميزات الرئيسية
+## ✨ الميزات الرئيسية
 
 ### 🎯 الوظائف الأساسية
 - **البحث المتقدم عن الفنادق** - بحث ذكي مع فلاتر متقدمة
@@ -24,59 +24,9 @@
 - **Tailwind CSS** - تصميم عصري ومرن
 - **Framer Motion** - حركات وانتقالات سلسة
 
-### 🛠️ التقنيات المستخدمة
-
-```typescript
-// Frontend
-React 18, Next.js 14, TypeScript
-Tailwind CSS, Framer Motion
-Lucide React Icons
-
-// Backend  
-Next.js API Routes
-Prisma ORM
-NextAuth.js Authentication
-
-// Integrations
-LiteAPI Travel
-SATIM Payment (Algeria)
-SendGrid Email Service
-Mapbox Maps
-
-// Tools
-ESLint, Prettier
-PostCSS, Autoprefixer
-```
-
-## 🏗️ هيكل المشروع
-
-```
-volo-platform/
-├── 📁 app/                    # Next.js App Router
-│   ├── 📁 api/               # API Routes
-│   │   ├── 📁 hotels/        # Hotels API
-│   │   ├── 📁 auth/          # Authentication API
-│   │   └── 📁 health/        # Health Check
-│   ├── 📁 search/            # Hotel Search Page
-│   ├── 📁 booking/           # Booking Management
-│   ├── 📁 dashboard/         # User Dashboard
-│   └── 📁 api-test/          # API Testing Interface
-├── 📁 components/            # React Components
-│   ├── 📁 ui/               # UI Components
-│   └── 📁 layout/           # Layout Components
-├── 📁 lib/                   # Utility Libraries
-│   ├── 📄 liteapi.ts        # LiteAPI Client
-│   ├── 📄 api-client.ts     # Frontend API Client
-│   ├── 📄 auth.ts           # Authentication Config
-│   └── 📄 prisma.ts         # Database Client
-├── 📁 prisma/               # Database Schema & Migrations
-└── 📁 types/                # TypeScript Type Definitions
-```
-
-## ⚡ البدء السريع
+## 🚀 البدء السريع
 
 ### 1. التثبيت
-
 ```bash
 # استنساخ المستودع
 git clone https://github.com/YOUR_USERNAME/volo-platform.git
@@ -87,37 +37,33 @@ npm install
 
 # إعداد متغيرات البيئة
 cp .env.example .env.local
-
-# تحديث ملف .env.local بمفاتيحك
 ```
 
 ### 2. إعداد متغيرات البيئة
-
 ```env
-# Database
+# قاعدة البيانات
 DATABASE_URL="postgresql://postgres:admin123@localhost:5432/volo?schema=public"
 
-# Authentication
+# المصادقة
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-key-here"
 
-# LiteAPI Integration
+# تكامل liteAPI
 LITEAPI_PRIVATE_KEY="sand_615a5da4-8696-4c72-b626-3997aa52dd21"
 LITEAPI_PUBLIC_KEY="b01ce90a-ca0d-4f5c-9ab7-67f148f45055"
 LITEAPI_BASE_URL="https://api.liteapi.travel"
 
-# Payment (SATIM Algeria)
+# بوابة الدفع SATIM (الجزائر)
 SATIM_MERCHANT_ID="demo-merchant-id"
 SATIM_API_KEY="demo-api-key"
 SATIM_SECRET_KEY="demo-secret-key"
 
-# Email (SendGrid)
+# خدمة البريد الإلكتروني
 SENDGRID_API_KEY="demo-api-key"
 SENDGRID_FROM_EMAIL="noreply@volo.dz"
 ```
 
 ### 3. تشغيل المشروع محلياً
-
 ```bash
 # تشغيل الخادم المحلي
 npm run dev
@@ -130,52 +76,45 @@ open http://localhost:3000
 
 ### الطريقة السريعة
 
-1. **إنشاء حساب GitHub**
-   - اذهب إلى [github.com](https://github.com)
-   - أنشئ مستودع جديد باسم `volo-platform`
+#### الخطوة 1: إنشاء حساب GitHub
+- اذهب إلى [github.com](https://github.com)
+- أنشئ مستودع جديد باسم `volo-platform`
 
-2. **رفع الكود**
-   ```bash
-   git init
-   git add .
-   git commit -m "منصة Volo مع تكامل liteAPI"
-   git branch -M main
-   git remote add origin https://github.com/USERNAME/volo-platform.git
-   git push -u origin main
-   ```
+#### الخطوة 2: رفع الكود
+```bash
+git init
+git add .
+git commit -m "منصة فولو مع تكامل liteAPI"
+git branch -M main
+git remote add origin https://github.com/USERNAME/volo-platform.git
+git push -u origin main
+```
 
-3. **النشر على Vercel**
-   - اذهب إلى [vercel.com](https://vercel.com)
-   - سجل دخولك بحساب GitHub
-   - اختر "New Project" واختر المستودع
-   - اضغط "Deploy"
+#### الخطوة 3: النشر على Vercel
+- اذهب إلى [vercel.com](https://vercel.com)
+- سجل دخولك بحساب GitHub
+- اختر "New Project" واختر المستودع
+- اضغط "Deploy"
 
-4. **إعداد متغيرات البيئة**
-   في Vercel Dashboard → Project Settings → Environment Variables:
+#### الخطوة 4: إعداد متغيرات البيئة
+في لوحة تحكم Vercel → إعدادات المشروع → متغيرات البيئة:
 
-   ```env
-   LITEAPI_PRIVATE_KEY=sand_615a5da4-8696-4c72-b626-3997aa52dd21
-   LITEAPI_PUBLIC_KEY=b01ce90a-ca0d-4f5c-9ab7-67f148f45055
-   LITEAPI_BASE_URL=https://api.liteapi.travel
-   NEXTAUTH_SECRET=your-secure-secret
-   NEXTAUTH_URL=https://your-project.vercel.app
-   ```
-
-### البدائل المجانية
-
-- **Netlify** - [netlify.com](https://netlify.com)
-- **Railway** - [railway.app](https://railway.app)
-- **Render** - [render.com](https://render.com)
+```env
+LITEAPI_PRIVATE_KEY=sand_615a5da4-8696-4c72-b626-3997aa52dd21
+LITEAPI_PUBLIC_KEY=b01ce90a-ca0d-4f5c-9ab7-67f148f45055
+LITEAPI_BASE_URL=https://api.liteapi.travel
+NEXTAUTH_SECRET=your-secure-secret
+NEXTAUTH_URL=https://your-project.vercel.app
+```
 
 ## 🧪 اختبار التطبيق
 
 ### اختبار API
-
 ```
-# Health Check
+# فحص الصحة
 GET /api/health
 
-# Hotel Search
+# البحث عن الفنادق
 POST /api/hotels/search
 {
   "destination": "الجزائر",
@@ -184,12 +123,11 @@ POST /api/hotels/search
   "guests": 2
 }
 
-# Hotel Details
+# تفاصيل الفندق
 GET /api/hotels/{hotelId}
 ```
 
 ### الصفحات الرئيسية
-
 - `/` - الصفحة الرئيسية
 - `/search` - البحث عن الفنادق  
 - `/booking` - إدارة الحجوزات
@@ -199,7 +137,6 @@ GET /api/hotels/{hotelId}
 ## 🔧 التطوير
 
 ### سكريبتات npm
-
 ```bash
 npm run dev          # تشغيل خادم التطوير
 npm run build        # بناء للإنتاج
@@ -210,44 +147,25 @@ npm run migrate      # تشغيل قاعدة البيانات
 npm run seed         # إضافة بيانات تجريبية
 ```
 
-### قواعد البيانات
-
-#### PostgreSQL (الأنسب للإنتاج)
-```bash
-# إنشاء قاعدة بيانات PostgreSQL
-createdb volo
-
-# تشغيل migrations
-npm run migrate
-
-# إضافة بيانات تجريبية
-npm run seed
-```
-
-#### قاعدة بيانات مجانية للاختبار
-- **Supabase** - [supabase.com](https://supabase.com)
-- **PlanetScale** - [planetscale.com](https://planetscale.com)
-- **Railway** - [railway.app](https://railway.app)
-
 ## 🔐 الأمان
 
 ### إعدادات الحماية
-- ✅ Rate limiting على API endpoints
-- ✅ CORS configuration
-- ✅ Content Security Policy (CSP)
-- ✅ XSS Protection
-- ✅ Secure headers
-- ✅ Environment variables protection
+- ✅ Rate limiting على نقاط API
+- ✅ تكوين CORS
+- ✅ سياسة أمان المحتوى (CSP)
+- ✅ حماية XSS
+- ✅ ترويسات آمنة
+- ✅ حماية متغيرات البيئة
 
-### Authentication
-- ✅ NextAuth.js مع JWT tokens
-- ✅ Bcrypt password hashing
-- ✅ Session management
-- ✅ Secure cookie settings
+### المصادقة
+- ✅ NextAuth.js مع رموز JWT
+- ✅ تشفير كلمات المرور بـ bcrypt
+- ✅ إدارة الجلسات
+- ✅ إعدادات كوكيز آمنة
 
-## 📱 API Documentation
+## 📱 توثيق API
 
-### LiteAPI Integration
+### تكامل LiteAPI
 
 #### البحث عن الفنادق
 ```typescript
@@ -285,7 +203,7 @@ interface Hotel {
 GET /api/hotels/[id]
 ```
 
-#### API Testing
+#### اختبار API
 اذهب إلى `/api-test` لاختبار جميع APIs بصرياً.
 
 ## 🌍 اللغات
@@ -296,12 +214,12 @@ GET /api/hotels/[id]
 
 ## 📊 المراقبة والتحليلات
 
-### Vercel Analytics
+### تحليلات Vercel
 - إحصائيات الزوار
 - أداء الموقع
 - الأخطاء والاستثناءات
 
-### API Monitoring
+### مراقبة API
 - مراقبة حالة liteAPI
 - تتبع الاستجابات
 - إحصائيات الاستخدام
@@ -313,19 +231,19 @@ GET /api/hotels/[id]
 - [التشغيل السريع](QUICK_DEPLOYMENT.md)
 - [مجموعة APIs](API_SUCCESS_SUMMARY.md)
 
-### استكشاف الأخطاء
-1. تحقق من logs في Vercel Dashboard
+### حل المشاكل
+1. تحقق من سجلات في لوحة تحكم Vercel
 2. تأكد من صحة متغيرات البيئة
 3. راجع ملف `.env.example` للمتطلبات
 
 ## 📄 الترخيص
 
-هذا المشروع مرخص تحت [MIT License](LICENSE).
+هذا المشروع مرخص تحت [رخصة MIT](LICENSE).
 
 ## 🙏 الشكر والتقدير
 
 - **LiteAPI** - لخدمة البحث عن الفنادق
-- **Next.js Team** - لإطار العمل الرائع
+- **فريق Next.js** - لإطار العمل الرائع
 - **Vercel** - للاستضافة المجانية
 - **Prisma** - لإدارة قاعدة البيانات
 
@@ -337,7 +255,7 @@ GET /api/hotels/[id]
 
 - **البريد الإلكتروني:** support@volo.dz
 - **الهاتف:** +213123456789
-- **الويب:** [volo.dz](https://volo.dz)
+- **الموقع الإلكتروني:** [volo.dz](https://volo.dz)
 
 ---
 
