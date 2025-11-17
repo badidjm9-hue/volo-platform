@@ -1,0 +1,360 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  GUEST
+  HOTEL_OWNER
+  ADMIN
+}
+
+enum LoyaltyTier {
+  BLUE
+  SILVER
+  GOLD
+}
+
+enum HotelStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum PropertyType {
+  HOTEL
+  APARTMENT
+  RESORT
+  GUEST_HOUSE
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum PaymentMethod {
+  CIB
+  EDHAHABIA
+  CARD
+  PAY_AT_PROPERTY
+}
+
+enum DocumentType {
+  LICENSE
+  TAX_ID
+  OWNER_ID
+  COMMERCIAL_REGISTER
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+model User {
+  id              String        @id @default(cuid())
+  email           String        @unique
+  phone           String?
+  passwordHash    String
+  firstName       String
+  lastName        String
+  role            UserRole      @default(GUEST)
+  profilePhoto    String?
+  language        String        @default("ar")
+  loyaltyTier     LoyaltyTier   @default(BLUE)
+  loyaltyPoints   Int           @default(0)
+  emailVerified   DateTime?
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  bookings        Booking[]
+  reviews         Review[]
+  hotels          Hotel[]       @relation("HotelOwner")
+  wishlists       Wishlist[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Hotel {
+  id              String         @id @default(cuid())
+  ownerId         String
+  name            String
+  nameAr          String
+  nameFr          String?
+  slug            String         @unique
+  description     String         @db.Text
+  propertyType    PropertyType   @default(HOTEL)
+  starRating      Int            @default(3)
+  status          HotelStatus    @default(PENDING)
+  address         String
+  city            String
+  country         String         @default("Algeria")
+  latitude        Float
+  longitude       Float
+  phone           String
+  email           String
+  amenities       Json           @default("[]")
+  policies        Json           @default("{}")
+  images          Json           @default("[]")
+  featuredImage   String?
+  isFeatured      Boolean        @default(false)
+  averageRating   Float          @default(0)
+  totalReviews    Int            @default(0)
+  totalBookings   Int            @default(0)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  owner           User           @relation("HotelOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  rooms           Room[]
+  bookings        Booking[]
+  reviews         Review[]
+  documents       Document[]
+  payouts         Payout[]
+
+  @@index([ownerId])
+  @@index([city])
+  @@index([status])
+  @@index([slug])
+  @@index([averageRating])
+}
+
+model Room {
+  id                 String    @id @default(cuid())
+  hotelId            String
+  name               String
+  nameAr             String
+  description        String    @db.Text
+  maxOccupancy       Int
+  bedConfiguration   Json
+  roomSize           Float
+  bathroomCount      Int       @default(1)
+  amenities          Json      @default("[]")
+  basePrice          Float
+  images             Json      @default("[]")
+  mealPlans          Json      @default("[]")
+  quantity           Int       @default(1)
+  isActive           Boolean   @default(true)
+  cancellationPolicy Json
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  hotel              Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  bookings           Booking[]
+
+  @@index([hotelId])
+  @@index([isActive])
+}
+
+model Booking {
+  id                String         @id @default(cuid())
+  referenceNumber   String         @unique
+  userId            String
+  hotelId           String
+  roomId            String
+  status            BookingStatus  @default(PENDING)
+  checkIn           DateTime
+  checkOut          DateTime
+  nights            Int
+  guests            Json
+  roomsBooked       Int            @default(1)
+  pricePerNight     Float
+  totalAmount       Float
+  mealPlan          String?
+  specialRequests   String?        @db.Text
+  guestDetails      Json
+  paymentStatus     PaymentStatus  @default(PENDING)
+  paymentMethod     PaymentMethod?
+  transactionId     String?
+  promoCode         String?
+  discount          Float          @default(0)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  user              User           @relation(fields: [userId], references: [id])
+  hotel             Hotel          @relation(fields: [hotelId], references: [id])
+  room              Room           @relation(fields: [roomId], references: [id])
+  review            Review?
+  transaction       Transaction?
+
+  @@index([userId])
+  @@index([hotelId])
+  @@index([roomId])
+  @@index([referenceNumber])
+  @@index([status])
+  @@index([checkIn])
+  @@index([checkOut])
+}
+
+model Review {
+  id               String    @id @default(cuid())
+  userId           String
+  hotelId          String
+  bookingId        String    @unique
+  overallScore     Float
+  scores           Json
+  title            String
+  comment          String    @db.Text
+  pros             String?   @db.Text
+  cons             String?   @db.Text
+  photos           Json      @default("[]")
+  isVerified       Boolean   @default(false)
+  helpfulVotes     Int       @default(0)
+  hotelResponse    String?   @db.Text
+  respondedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+  hotel            Hotel     @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  booking          Booking   @relation(fields: [bookingId], references: [id])
+
+  @@index([userId])
+  @@index([hotelId])
+  @@index([bookingId])
+  @@index([overallScore])
+}
+
+model Wishlist {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String   @default("My Favorites")
+  hotelIds    Json     @default("[]")
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Transaction {
+  id              String         @id @default(cuid())
+  bookingId       String         @unique
+  amount          Float
+  currency        String         @default("DZD")
+  method          PaymentMethod
+  status          PaymentStatus
+  gatewayResponse Json?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  booking         Booking        @relation(fields: [bookingId], references: [id])
+
+  @@index([bookingId])
+  @@index([status])
+}
+
+model Promotion {
+  id             String        @id @default(cuid())
+  code           String        @unique
+  description    String
+  discountType   DiscountType
+  discountValue  Float
+  minAmount      Float?
+  maxDiscount    Float?
+  startDate      DateTime
+  endDate        DateTime
+  usageLimit     Int?
+  usageCount     Int           @default(0)
+  isActive       Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+}
+
+model Document {
+  id              String         @id @default(cuid())
+  hotelId         String
+  type            DocumentType
+  fileUrl         String
+  status          DocumentStatus @default(PENDING)
+  rejectionReason String?        @db.Text
+  uploadedAt      DateTime       @default(now())
+  reviewedAt      DateTime?
+
+  hotel           Hotel          @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@index([hotelId])
+  @@index([status])
+}
+
+model Payout {
+  id              String        @id @default(cuid())
+  hotelId         String
+  amount          Float
+  commission      Float
+  netAmount       Float
+  status          PayoutStatus  @default(PENDING)
+  bookingIds      Json          @default("[]")
+  bankDetails     Json
+  requestedAt     DateTime      @default(now())
+  processedAt     DateTime?
+  completedAt     DateTime?
+  notes           String?       @db.Text
+
+  hotel           Hotel         @relation(fields: [hotelId], references: [id])
+
+  @@index([hotelId])
+  @@index([status])
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  entity      String
+  entityId    String?
+  details     Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+}
+
+model PlatformSettings {
+  id                String   @id @default(cuid())
+  commissionRate    Float    @default(0.15)
+  vatRate           Float    @default(0.19)
+  currency          String   @default("DZD")
+  paymentMethods    Json     @default("[]")
+  emailTemplates    Json     @default("{}")
+  maintenanceMode   Boolean  @default(false)
+  featuredSlots     Int      @default(10)
+  updatedAt         DateTime @updatedAt
+}
