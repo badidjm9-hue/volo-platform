@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volo Platform - منصة حجز الفنادق في الجزائر</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Tajawal', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #32B8C6 0%, #1A3B5D 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .btn-primary { background: linear-gradient(135deg, #32B8C6 0%, #1A3B5D 100%); }
+        .btn-primary:hover { background: linear-gradient(135deg, #1A3B5D 0%, #32B8C6 100%); }
+        .search-form { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .floating { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <nav class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="text-2xl font-bold text-navy">Volo</div>
+                    <div class="hidden md:flex space-x-6 space-x-reverse">
+                        <a href="#home" class="text-gray-700 hover:text-teal-500 transition">الرئيسية</a>
+                        <a href="#search" class="text-gray-700 hover:text-teal-500 transition">البحث</a>
+                        <a href="#hotels" class="text-gray-700 hover:text-teal-500 transition">الفنادق</a>
+                        <a href="#contact" class="text-gray-700 hover:text-teal-500 transition">اتصل بنا</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <button class="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition" onclick="showLogin()">تسجيل الدخول</button>
+                    <button class="border border-teal-500 text-teal-500 px-4 py-2 rounded-lg hover:bg-teal-500 hover:text-white transition" onclick="showRegister()">إنشاء حساب</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white fade-in">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    اكتشف أفضل الفنادق في الجزائر
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    منصة حجز الفنادق الرائدة في الجزائر مع دعم الدفع المحلي
+                </p>
+            </div>
+            
+            <!-- Search Form -->
+            <div class="max-w-4xl mx-auto mt-12">
+                <div class="search-form rounded-2xl p-8 shadow-2xl">
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">الوجهة</label>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                <option>اختر المدينة</option>
+                                <option>الجزائر</option>
+                                <option>وهران</option>
+                                <option>قسنطينة</option>
+                                <option>عنابة</option>
+                                <option>سطيف</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">تاريخ الوصول</label>
+                            <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">تاريخ المغادرة</label>
+                            <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="searchHotels()" class="w-full bg-teal-500 text-white py-3 rounded-lg hover:bg-teal-600 transition font-semibold">
+                                <i class="fas fa-search ml-2"></i>
+                                بحث
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 floating">
+            <i class="fas fa-hotel text-white text-4xl opacity-30"></i>
+        </div>
+        <div class="absolute bottom-20 right-10 floating" style="animation-delay: 1s;">
+            <i class="fas fa-map-marked-alt text-white text-4xl opacity-30"></i>
+        </div>
+    </section>
+
+    <!-- Featured Hotels -->
+    <section id="hotels" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">الفنادق المميزة</h2>
+                <p class="text-xl text-gray-600">اختر من أفضل الفنادق في الجزائر</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Hotel 1 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="فندق الأوراسي" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-star"></i> 4.8
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">فندق الأوراسي</h3>
+                        <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt ml-2"></i>الجزائر العاصمة</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-bold text-teal-500">12,000 دج</div>
+                            <div class="text-sm text-gray-500">لليلة واحدة</div>
+                        </div>
+                        <button onclick="bookHotel('أوراسي')" class="w-full mt-4 btn-primary text-white py-3 rounded-lg font-semibold">
+                            احجز الآن
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hotel 2 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="فندق شيراتون وهران" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-star"></i> 4.6
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">فندق شيراتون وهران</h3>
+                        <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt ml-2"></i>وهران</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-bold text-teal-500">15,500 دج</div>
+                            <div class="text-sm text-gray-500">لليلة واحدة</div>
+                        </div>
+                        <button onclick="bookHotel('شيراتون وهران')" class="w-full mt-4 btn-primary text-white py-3 rounded-lg font-semibold">
+                            احجز الآن
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hotel 3 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1582719201950-5c5c14d32b88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="فندق قسنطينة" class="w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4 bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-star"></i> 4.4
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">فندق قسنطينة</h3>
+                        <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt ml-2"></i>قسنطينة</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-bold text-teal-500">9,800 دج</div>
+                            <div class="text-sm text-gray-500">لليلة واحدة</div>
+                        </div>
+                        <button onclick="bookHotel('قسنطينة')" class="w-full mt-4 btn-primary text-white py-3 rounded-lg font-semibold">
+                            احجز الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">لماذا تختار Volo؟</h2>
+                <p class="text-xl text-gray-600">ميزات تجعل تجربتك أفضل</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-teal-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">حجز آمن</h3>
+                    <p class="text-gray-600">دفع آمن ومشفر مع دعم SATIM</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-teal-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-headset text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">دعم 24/7</h3>
+                    <p class="text-gray-600">فريق دعم متاح على مدار الساعة</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-teal-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tags text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">أفضل الأسعار</h3>
+                    <p class="text-gray-600">أسعار تنافسية وضمان أفضل سعر</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold mb-4">Volo</div>
+                    <p class="text-gray-300">منصة حجز الفنادق الرائدة في الجزائر</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">الروابط</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">الرئيسية</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">عن الشركة</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">اتصل بنا</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">الشروط والأحكام</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">الخدمات</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">حجز الفنادق</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">خدمة العملاء</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">الدعم التقني</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">أسئلة شائعة</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">تواصل معنا</h3>
+                    <div class="space-y-2">
+                        <p class="text-gray-300"><i class="fas fa-phone ml-2"></i>+213 123 456 789</p>
+                        <p class="text-gray-300"><i class="fas fa-envelope ml-2"></i>info@volo.dz</p>
+                        <p class="text-gray-300"><i class="fas fa-map-marker-alt ml-2"></i>الجزائر العاصمة</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-600 mt-8 pt-8 text-center">
+                <p class="text-gray-300">&copy; 2025 Volo Platform. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold mb-2">تسجيل الدخول</h3>
+                <p class="text-gray-600">مرحباً بك مرة أخرى!</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="example@email.com">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+                    <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold mb-4">
+                    تسجيل الدخول
+                </button>
+                
+                <button type="button" onclick="closeLogin()" class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition">
+                    إلغاء
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="text-sm text-gray-600">ليس لديك حساب؟ 
+                    <button onclick="switchToRegister()" class="text-teal-500 hover:text-teal-600 font-semibold">إنشاء حساب جديد</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold mb-2">إنشاء حساب جديد</h3>
+                <p class="text-gray-600">انضم إلى منصة Volo</p>
+            </div>
+            
+            <form onsubmit="handleRegister(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="الاسم الكامل">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="example@email.com">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
+                    <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="+213 XXX XXX XXX">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">نوع الحساب</label>
+                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                        <option value="USER">مستخدم عادي</option>
+                        <option value="OWNER">صاحب فندق</option>
+                    </select>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+                    <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold mb-4">
+                    إنشاء الحساب
+                </button>
+                
+                <button type="button" onclick="closeRegister()" class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition">
+                    إلغاء
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="text-sm text-gray-600">لديك حساب بالفعل؟ 
+                    <button onclick="switchToLogin()" class="text-teal-500 hover:text-teal-600 font-semibold">تسجيل الدخول</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Login Modal Functions
+        function showLogin() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('registerModal').classList.add('hidden');
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        // Register Modal Functions
+        function showRegister() {
+            document.getElementById('registerModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function closeRegister() {
+            document.getElementById('registerModal').classList.add('hidden');
+        }
+
+        function switchToRegister() {
+            showRegister();
+        }
+
+        function switchToLogin() {
+            showLogin();
+        }
+
+        // Form Handlers
+        function handleLogin(event) {
+            event.preventDefault();
+            alert('تم تسجيل الدخول بنجاح! مرحباً بك في منصة Volo');
+            closeLogin();
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            alert('تم إنشاء الحساب بنجاح! مرحباً بك في منصة Volo');
+            closeRegister();
+        }
+
+        function searchHotels() {
+            alert('تم البحث عن الفنادق! سيتم توجيهك لصفحة النتائج...');
+            // Here you would normally redirect to search results page
+        }
+
+        function bookHotel(hotelName) {
+            alert('سيتم توجيهك لصفحة حجز فندق ' + hotelName);
+            // Here you would normally redirect to booking page
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) closeLogin();
+        });
+
+        document.getElementById('registerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRegister();
+        });
+
+        // Add some interactive animations
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.card-hover');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('fade-in');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
