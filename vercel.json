@@ -1,0 +1,10 @@
+{
+  "env": {
+    "PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING": "1",
+    "PRISMA_CLI_QUERY_ENGINES_TYPE": "binary"
+  },
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev"
+}
