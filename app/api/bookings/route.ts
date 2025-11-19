@@ -107,7 +107,6 @@ export async function POST(request: NextRequest) {
         const paymentResult = await satimGateway.createPayment({
           amount: totalAmount,
           returnUrl: `${process.env.NEXTAUTH_URL}/booking/${booking.id}/payment/success`,
-          failUrl: `${process.env.NEXTAUTH_URL}/booking/${booking.id}/payment/fail`,
           description: `حجز فندق ${booking.hotel.nameAr}`,
           customerEmail: booking.user.email
         })
