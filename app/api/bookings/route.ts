@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
 
     // Create transaction if payment is required
     if (paymentMethod === 'CIB' || paymentMethod === 'EDHAHABIA') {
-      const transaction = await prisma.transaction.create({
+      await prisma.transaction.create({
         data: {
           bookingId: booking.id,
           amount: totalAmount,
