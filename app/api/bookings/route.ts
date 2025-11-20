@@ -105,11 +105,15 @@ export async function POST(request: NextRequest) {
       // If SATIM payment is needed, create SATIM payment
       if (paymentMethod === 'CIB') {
         const paymentResult = await satimGateway.createPayment({
-          amount: totalAmount,
-          returnUrl: `${process.env.NEXTAUTH_URL}/booking/${booking.id}/payment/success`,
-          description: `حجز فندق ${booking.hotel.nameAr}`,
-          customerEmail: booking.user.email
-        })
+  amount: totalAmount,
+  currency: "DZD", // العملة
+  orderReference: booking.id, // رقم الحجز
+  customerName: booking.customerName, // اسم العميل
+  customerEmail: booking.customerEmail,
+  returnUrl: `${process.env.NEXTAUTH_URL}/booking/${booking.id}/payment/success`,
+  cancelUrl: `${process.env.NEXTAUTH_URL}/booking/${booking.id}/payment/cancel`,
+  description: `حجز فندق ${booking.hotel.nameAr}`,
+});
 
         if (!paymentResult.success) {
           return NextResponse.json(
